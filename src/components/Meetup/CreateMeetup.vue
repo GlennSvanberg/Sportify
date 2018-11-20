@@ -9,7 +9,7 @@
             <v-flex xs-12>
                 <form @submit.prevent="onCreateMeetup">
                     <v-layout row>
-                        <v-flex xs12 sm6 offset-sm3>
+                        <v-flex xs12 md6 offset-sm3>
                             <v-text-field
                             dark
                             name="title"
@@ -20,7 +20,7 @@
                         </v-flex>
                     </v-layout>
                     <v-layout row>
-                        <v-flex xs12 sm6 offset-sm3>
+                        <v-flex xs12 md6 offset-sm3>
                             <v-text-field
                             dark
                             name="location"
@@ -31,7 +31,7 @@
                         </v-flex>
                     </v-layout>
                     <v-layout row>
-                        <v-flex xs12 sm6 offset-sm3>
+                        <v-flex xs12 md6 offset-sm3>
                             <v-btn raised class="accent" @click="onPickFile">Ladda upp bild</v-btn>
                             <input 
                             dark
@@ -43,7 +43,7 @@
                         </v-flex>
                     </v-layout>
                     <v-layout row>
-                        <v-flex xs12 sm6 offset-sm3>
+                        <v-flex xs12 md6 offset-sm3>
                             <v-textarea
                             dark
                             name="description"
@@ -54,22 +54,35 @@
                         </v-flex>
                     </v-layout>
                     <v-layout row>
-                        <v-flex xs-12 sm6 offset-sm3>
-                            <h4 class="display-1 white--text">Välj datum och tid</h4>
+                        <v-flex xs-12 md6 offset-sm3>
+                            <h4 class="display-1 white--text mb-3">Välj datum och tid</h4>
                         </v-flex>
                     </v-layout>
                     <v-layout row>
-                        <v-flex xs-12 sm6 offset-sm3 class="mb-2">
-                            <v-date-picker v-model="date"></v-date-picker>
+                        <v-flex xs-12 md6 offset-sm3 class="mb-2">
+                            <v-date-picker 
+                                :first-day-of-week="1"
+                                v-model="date"
+                                locale="sv-se"
+                                landscape 
+                                color="info"
+                                full-width
+                            ></v-date-picker>
                         </v-flex>
                     </v-layout>
                     <v-layout row>
-                        <v-flex xs-12 sm6 offset-sm3>
-                            <v-time-picker format="24hr" v-model="time"></v-time-picker>
+                        <v-flex xs-12 md6 offset-sm3>
+                            <v-time-picker 
+                            format="24hr" 
+                            full-width 
+                            landscape 
+                            color="info" 
+                            v-model="time "
+                            ></v-time-picker>
                         </v-flex>
                     </v-layout>
                     <v-layout row>
-                        <v-flex xs12 sm6 offset-sm3>
+                        <v-flex xs12 md6 offset-sm3>
                             <v-btn 
                             class="accent" 
                             :disabled="!formIsValid"
@@ -77,7 +90,7 @@
                         </v-flex>
                     </v-layout>
                        <v-layout row>
-                        <v-flex xs12 sm6 offset-sm3>
+                        <v-flex xs12 md6 offset-sm3>
                             <img :src="imageUrl" height="150px">
                         </v-flex>
                     </v-layout>
@@ -94,9 +107,10 @@ export default {
       location: "",
       imageUrl: "",
       description: "",
-      date: null,
+      date: new Date().toISOString().substr(0, 10),
       time: new Date(),
-      image: null
+      image: null,
+      picker: new Date().toISOString().substr(0, 10)
     };
   },
   computed: {
