@@ -7,13 +7,14 @@
         </v-layout>
         <v-layout row>
             <v-flex xs12 sm6 offset-sm3>
-                <v-card>
+                <v-card class="info">
                     <v-card-text>
                         <v-container>
                             <form @submit.prevent="onSignUp">
                                 <v-layout row>
                                     <v-flex xs12>
                                         <v-text-field
+                                        dark
                                         name="email"
                                         label="Mail"
                                         id="email"
@@ -25,8 +26,9 @@
                                 <v-layout>
                                     <v-flex xs12>
                                         <v-text-field
+                                        dark
                                         name="password"
-                                        label="Password"
+                                        label="Lösenord"
                                         id="password"
                                         v-model="password"
                                         type="password"
@@ -36,8 +38,9 @@
                                     <v-layout row>
                                          <v-flex xs12>
                                             <v-text-field
+                                            dark
                                             name="confirmPassword"
-                                            label="Confirm Password"
+                                            label="Bekräfta lösenord"
                                             id="confirmPassword"
                                             v-model="confirmPassword"
                                             type="password"
@@ -47,7 +50,7 @@
                                     </v-layout>
                                     <v-layout row>
                                          <v-flex xs12>
-                                            <v-btn type="submit" :disabled="loading" :loading="loading">Sign up
+                                            <v-btn class="accent" type="submit" :disabled="loading" :loading="loading">Registrera
                                                 <span slot="loader" class="custom-loader">
                                                     <v-icon light>cached</v-icon>
                                                 </span>

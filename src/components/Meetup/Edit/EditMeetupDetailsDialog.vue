@@ -8,7 +8,7 @@
             <v-container>
                 <v-layout row wrap>
                     <v-flex xs12>
-                        <v-card-title>Edit Meetup</v-card-title>
+                        <v-card-title clasS="display-1 primary--text">Ändra Evenemang</v-card-title>
                     </v-flex>
                 </v-layout>
                 <v-divider></v-divider>
@@ -35,8 +35,8 @@
                 <v-layout row wrap>
                     <v-flex xs12>
                         <v-card-actions>
-                            <v-btn flat class="blue--text darken-1" @click="editDialog = false">Close</v-btn>
-                            <v-btn flat class="blue--text darken-1" @click="onSaveChanges">Save</v-btn>
+                            <v-btn class="error" @click="editDialog = false">Ångra</v-btn>
+                            <v-btn class="accent" @click="onSaveChanges">Spara</v-btn>
                         </v-card-actions>
                     </v-flex>
                 </v-layout>

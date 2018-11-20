@@ -15,10 +15,10 @@ import RegisterDialog from "./components/Meetup/Registration/RegisterDialog.vue"
 
 Vue.use(Vuetify, {
   theme: {
-    primary: "#D32F2F",
-    accent: "#FF5252",
-    secondary: "#BDBDBD",
-    info: "#1E88E5",
+    primary: "#3A689C",
+    accent: "#16963F",
+    secondary: "#A3B3BD",
+    info: "#3987db",
     warning: "#FFA000",
     error: "#D50000",
     success: "#66BB6A"

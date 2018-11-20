@@ -1,12 +1,12 @@
 <template>
     <v-dialog width="350px" persistent v-model="editDialog">
         <!--Button shows outside modal slot to Activator -->
-        <v-btn accent slot="activator">Edit Date</v-btn>
+        <v-btn class="" slot="activator">Ändra Datum</v-btn>
         <v-card>
             <v-container>
                 <v-layout row wrap>
                     <v-flex xs12>
-                        <v-card-title>Edit Meetup Date</v-card-title>
+                        <v-card-title class="display-1 primary--text">Ändra datum</v-card-title>
                     </v-flex>
                 </v-layout>
                 <v-divider></v-divider>
@@ -15,13 +15,11 @@
                         <v-date-picker v-model="editableDate" style="width: 100%" actions>
                             <template slot-scope='{save, cancel}'>
                                 <v-btn 
-                                class="blue--text darken-1" 
-                                flat 
-                                @click="editDialog = false">Close</v-btn>
+                                class="error" 
+                                @click="editDialog = false">Ångra</v-btn>
                                 <v-btn 
-                                class="blue--text darken-1" 
-                                flat 
-                                @click="onSaveChanges">Save</v-btn>
+                                class="accent" 
+                                @click="onSaveChanges">Spara</v-btn>
                             </template>
                         </v-date-picker>
                     </v-flex>

@@ -1,6 +1,6 @@
 <template>
-  <v-app>
-    <v-navigation-drawer temporary fixed v-model="sideNav">
+  <v-app class="primary">
+    <v-navigation-drawer class="accent" dark temporary fixed v-model="sideNav">
       <v-list>
         <v-list-tile 
         v-for="item in menuItems" 
@@ -16,11 +16,11 @@
           <v-list-tile-action>
              <v-icon>exit_to_app</v-icon>
           </v-list-tile-action>
-          <v-list-tile-content>Logout</v-list-tile-content>
+          <v-list-tile-content>Logga ut</v-list-tile-content>
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar dark class="primary">
+    <v-toolbar dark class="accent">
       <v-toolbar-title>
         <router-link to="/" tag="span" style="cursor: pointer">Sportify</router-link>
         </v-toolbar-title>
@@ -29,7 +29,7 @@
       class="hidden-md-and-up"
       ></v-toolbar-side-icon>
       <v-spacer></v-spacer>
-      <v-toolbar-items class="hidden-sm-only">
+      <v-toolbar-items class="hidden-sm-and-down">
         <v-btn flat 
         v-for="item in menuItems" 
         :key="item.title"
@@ -41,7 +41,7 @@
           v-if="userIsAuthenticated"
           @click="onLogout">
             <v-icon left>exit_to_app</v-icon>
-            Logout
+            Logga ut
           </v-btn>
       </v-toolbar-items>
     </v-toolbar>
@@ -66,18 +66,18 @@ export default {
   computed: {
     menuItems() {
       let menuItems = [
-        { icon: "face", title: "Sign up", link: "/signup" },
-        { icon: "lock_open", title: "Sign in", link: "/signin" }
+        { icon: "face", title: "Registrera", link: "/signup" },
+        { icon: "lock_open", title: "Logga in", link: "/signin" }
       ];
       if (this.userIsAuthenticated) {
         menuItems = [
           {
             icon: "supervisor_account",
-            title: "View Meetups",
+            title: "Visa Evenemang",
             link: "/meetups"
           },
-          { icon: "room", title: "Organize Meetup", link: "/meetups/new" },
-          { icon: "person", title: "Profile", link: "/profile" }
+          { icon: "room", title: "Skapa Evenemang", link: "/meetups/new" },
+          { icon: "person", title: "Min Profil", link: "/profile" }
         ];
       }
       return menuItems;

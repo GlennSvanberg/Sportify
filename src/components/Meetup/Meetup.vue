@@ -12,9 +12,9 @@
         </v-layout>
         <v-layout row wrap v-else>
             <v-flex xs12>
-                <v-card>
+                <v-card class="info">
                     <v-card-title>
-                        <h1 class="primary--text">{{meetup.title}}</h1>
+                        <h1 class="white--text">{{meetup.title}}</h1>
                         <template v-if="userIsCreator">
                             <v-spacer></v-spacer>
                             <app-edit-meetup-details-dialog :meetup="meetup"></app-edit-meetup-details-dialog>
@@ -26,7 +26,7 @@
                           contain
                         ></v-card-media>
                         <v-card-text>
-                            <div class="info--text">{{meetup.date | date}} - {{meetup.location}}</div>
+                            <div class="white--text">{{meetup.date | date}} - {{meetup.location}}</div>
                             <div>
                                 <app-edit-meetup-date-dialog 
                                 :meetup="meetup" 
@@ -37,7 +37,7 @@
                                 v-if="userIsAuthenticated"
                                 ></app-edit-meetup-time-dialog>
                                 </div>
-                            <div>{{meetup.description}}</div>
+                            <div class="white--text">{{meetup.description}}</div>
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>

@@ -2,7 +2,7 @@
     <v-container>
         <v-layout row>
             <v-flex xs12 sm6 offset-sm3>
-                <h2 class="secondary--text">Create a new Meetup</h2>
+                <h2 class="white--text">Skapa Evenemang</h2>
             </v-flex>
         </v-layout>
         <v-layout row>
@@ -11,8 +11,9 @@
                     <v-layout row>
                         <v-flex xs12 sm6 offset-sm3>
                             <v-text-field
+                            dark
                             name="title"
-                            label="Title"
+                            label="Titel"
                             id="title"
                             v-model="title"
                             required></v-text-field>
@@ -21,8 +22,9 @@
                     <v-layout row>
                         <v-flex xs12 sm6 offset-sm3>
                             <v-text-field
+                            dark
                             name="location"
-                            label="Location"
+                            label="Plats"
                             id="location"
                             v-model="location"
                             required></v-text-field>
@@ -30,8 +32,9 @@
                     </v-layout>
                     <v-layout row>
                         <v-flex xs12 sm6 offset-sm3>
-                            <v-btn raised class="primary" @click="onPickFile">Upload Image</v-btn>
+                            <v-btn raised class="accent" @click="onPickFile">Ladda upp bild</v-btn>
                             <input 
+                            dark
                             type="file" 
                             style="display: none;" 
                             ref="fileInput" 
@@ -42,8 +45,9 @@
                     <v-layout row>
                         <v-flex xs12 sm6 offset-sm3>
                             <v-textarea
+                            dark
                             name="description"
-                            label="Description"
+                            label="Beskrivning"
                             id="description"
                             v-model="description"
                             required></v-textarea>
@@ -51,7 +55,7 @@
                     </v-layout>
                     <v-layout row>
                         <v-flex xs-12 sm6 offset-sm3>
-                            <h4 class="display-1">Choose Date & Time</h4>
+                            <h4 class="display-1 white--text">Välj datum och tid</h4>
                         </v-flex>
                     </v-layout>
                     <v-layout row>
@@ -67,9 +71,9 @@
                     <v-layout row>
                         <v-flex xs12 sm6 offset-sm3>
                             <v-btn 
-                            class="primary" 
+                            class="accent" 
                             :disabled="!formIsValid"
-                            type="submit">Create Meetup</v-btn>
+                            type="submit">Skapa Evenemang</v-btn>
                         </v-flex>
                     </v-layout>
                        <v-layout row>
