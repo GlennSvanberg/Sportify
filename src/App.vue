@@ -20,7 +20,7 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar dark class="accent">
+    <v-toolbar dark fixed class="accent">
       <v-toolbar-title>
         <router-link to="/" tag="span" style="cursor: pointer">Sportify</router-link>
         </v-toolbar-title>
@@ -46,7 +46,7 @@
       </v-toolbar-items>
     </v-toolbar>
     <main>
-      <router-view></router-view>
+      <router-view class="mt-5"></router-view>
     </main>
   </v-app>
 </template>
