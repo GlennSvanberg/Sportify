@@ -64,8 +64,7 @@ export default {
 
 <style scoped>
 .fixed {
-    position: fixed;
+  flex: 0 0 150px;
 }
-
 </style>
 

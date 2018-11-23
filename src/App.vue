@@ -12,7 +12,8 @@
           <v-list-tile-content>{{ item.title }}</v-list-tile-content>
         </v-list-tile>
         <v-list-tile v-if="userIsAuthenticated"
-        @click="onLogout">
+        @click="onLogout"
+          to = "/signin">
           <v-list-tile-action>
              <v-icon>exit_to_app</v-icon>
           </v-list-tile-action>
@@ -39,7 +40,8 @@
           </v-btn>
           <v-btn flat
           v-if="userIsAuthenticated"
-          @click="onLogout">
+          @click="onLogout"
+          to = "/signin">
             <v-icon left>exit_to_app</v-icon>
             Logga ut
           </v-btn>
@@ -64,6 +66,9 @@ export default {
     }
   },
   computed: {
+    user() {
+      return this.$store.getters.user;
+    },
     menuItems() {
       let menuItems = [
         { icon: "face", title: "Registrera", link: "/signup" },

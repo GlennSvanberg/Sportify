@@ -1,12 +1,12 @@
 <template>
     <v-container>
         <v-layout row v-if="error">
-            <v-flex xs12 sm6 offset-sm3>
+            <v-flex xs12 sm8 offset-sm2>
                 <app-alert @dismissed="onDismissed" :text="error"></app-alert>
             </v-flex>
         </v-layout>
         <v-layout row>
-            <v-flex xs12 sm6 offset-sm3>
+            <v-flex xs12 sm8 offset-sm2>
                 <v-card class="info">
                     <v-card-text>
                         <v-container>
@@ -39,6 +39,11 @@
                                          <v-flex xs12>
                                                      <v-btn class="accent" type="submit" :disabled="loading" :loading="loading">Logga in
                                                     <span slot="loader" class="custom-loader">
+                                                    <v-icon light>cached</v-icon>
+                                                </span>
+                                            </v-btn>
+                                            <v-btn class="primary" @click="facebookLogin"  :disabled="loading" :loading="loading">fortsätt med Facebook
+                                                <span slot="loader" class="custom-loader">
                                                     <v-icon light>cached</v-icon>
                                                 </span>
                                             </v-btn>
@@ -84,6 +89,16 @@ export default {
         email: this.email,
         password: this.password
       });
+    },
+    facebookLogin() {
+      this.$store
+        .dispatch("signInWithFacebook")
+        .then(() => {
+          //location.reload();
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   },
   onDismissed() {

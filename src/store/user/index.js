@@ -1,4 +1,5 @@
 import * as firebase from "firebase";
+import { resolve } from "path";
 
 export default {
   state: {
@@ -25,6 +26,7 @@ export default {
     },
     setUser(state, payload) {
       state.user = payload;
+      console.log("name: " + payload.name);
     }
   },
   actions: {
@@ -113,7 +115,10 @@ export default {
       commit("setUser", {
         id: payload.uid,
         registeredMeetups: [],
-        fbKeys: {}
+        fbKeys: {},
+        name: payload.displayName,
+        email: payload.email,
+        photoURL: payload.photoURL
       });
     },
     fetchUserData({ commit, getters }) {
@@ -133,7 +138,10 @@ export default {
           const updatedUser = {
             id: getters.user.id,
             registeredMeetups: registeredMeetups,
-            fbKeys: swappedPairs
+            fbKeys: swappedPairs,
+            name: getters.user.name,
+            email: getters.user.email,
+            photoURL: getters.user.photoURL
           };
           commit("setLoading", false);
           commit("setUser", updatedUser);
@@ -146,6 +154,31 @@ export default {
     logout({ commit }) {
       firebase.auth().signOut();
       commit("setUser", null);
+      //redirect
+    },
+    signInWithFacebook({ commit }) {
+      commit("setLoading", true);
+      firebase
+        .auth()
+        .signInWithPopup(new firebase.auth.FacebookAuthProvider())
+        .then(data => {
+          const newUser = {
+            id: user.uid,
+            registeredMeetups: [],
+            fbKeys: {},
+            name: data.user.displayName,
+            email: data.user.email,
+            photoURL: data.user.photoURL
+          };
+          commit("setUser", newUser);
+
+          commit("setLoading", false);
+          console.log("user" + data.user.displayName);
+        })
+        .catch(error => {
+          commit("setLoading", false);
+          console.log(error);
+        });
     }
   },
   getters: {

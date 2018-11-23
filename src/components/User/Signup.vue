@@ -1,12 +1,12 @@
 <template>
     <v-container>
         <v-layout row v-if="error">
-            <v-flex xs12 sm6 offset-sm3>
+            <v-flex xs12 sm8 offset-sm2>
                 <app-alert @dismissed="onDismissed" :text="error"></app-alert>
             </v-flex>
         </v-layout>
         <v-layout row>
-            <v-flex xs12 sm6 offset-sm3>
+            <v-flex xs12 sm8 offset-sm2>
                 <v-card class="info">
                     <v-card-text>
                         <v-container>
@@ -50,7 +50,13 @@
                                     </v-layout>
                                     <v-layout row>
                                          <v-flex xs12>
+                                             
                                             <v-btn class="accent" type="submit" :disabled="loading" :loading="loading">Registrera
+                                                <span slot="loader" class="custom-loader">
+                                                    <v-icon light>cached</v-icon>
+                                                </span>
+                                            </v-btn>
+                                            <v-btn class="primary" @click="facebookLogin"  :disabled="loading" :loading="loading">fortsätt med Facebook
                                                 <span slot="loader" class="custom-loader">
                                                     <v-icon light>cached</v-icon>
                                                 </span>
@@ -60,6 +66,9 @@
                             </form>
                         </v-container>
                     </v-card-text>
+                    <v-card-actions>
+                        
+                    </v-card-actions>
                 </v-card>
             </v-flex>
         </v-layout>
@@ -108,6 +117,16 @@ export default {
     onDismissed() {
       console.log("dismissed Alert!");
       this.$store.dispatch("clearError");
+    },
+    facebookLogin() {
+      this.$store
+        .dispatch("signInWithFacebook")
+        .then(() => {
+          //location.reload();
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   }
 };

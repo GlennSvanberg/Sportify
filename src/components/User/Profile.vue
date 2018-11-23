@@ -5,7 +5,7 @@
                     <v-layout row>
                         <v-avatar size="200px" >
                             <v-img
-                                src="../../../static/glenn900.jpg"
+                                :src="user.photoURL"
                                 height="200px"
                                 contain
                                 class="mt-5"
@@ -39,9 +39,9 @@
                     <v-card flat class="mx-4 my-4 info" max-width="400px">
                         <v-card-text class="white--text" >
                         <div>
-                        <div class="headline">{{ firstName }} {{ lastName}}</div>
-                        <div class="mt-4">Ålder: {{ age }}</div>
-                        <div class="">Beskrivning: {{ description }}</div>
+                        <div class="headline mb-4">{{ user.name}}</div>
+                        <div class="mb-4">Epost: {{ user.email}}</div>
+                        <div class="">{{ description }}</div>
                         <div class="mt-4 headline">Mina intressen: </div>
                         <v-list class="info white--text" dense>
                             <v-list-tile v-for="(intrest, index) in intrests" :key="index">
@@ -61,19 +61,18 @@
 export default {
   data() {
     return {
-      firstName: "",
-      lastName: "",
-      age: "",
       description: "",
       intrests: [],
       meetups: []
     };
   },
+  computed: {
+    user() {
+      return this.$store.getters.user;
+    }
+  },
   methods: {},
   created() {
-    this.firstName = "Glenn";
-    this.lastName = "Svanberg";
-    this.age = "30";
     this.description =
       "Fotbollspelare som precis avslutat karriären som proffs, söker i liknande situationer Lorem ipsum dolor sit amet consectetur, adipisicing elit. Accusamus officiis nemo at inventore quia, voluptatibus eaque dolor optio commodi reiciendis totam praesentium dolore reprehenderit cumque rem es";
     this.intrests.push("Fotboll", "Klättring", "Löpning");
