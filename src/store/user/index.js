@@ -26,7 +26,6 @@ export default {
     },
     setUser(state, payload) {
       state.user = payload;
-      console.log("name: " + payload.name);
     }
   },
   actions: {
@@ -125,23 +124,26 @@ export default {
       commit("setLoading", true);
       firebase
         .database()
-        .ref("/users/" + getters.user.id + "/registrations/")
+        .ref("/users/" + getters.user.id)
         .once("value")
         .then(data => {
-          const dataPairs = data.val();
           let registeredMeetups = [];
           let swappedPairs = {};
-          for (let key in dataPairs) {
-            registeredMeetups.push(dataPairs[key]);
-            swappedPairs[dataPairs[key]] = key;
+
+          if (data.registrations) {
+            const dataPairs = data.registrations.val();
+            for (let key in dataPairs) {
+              registeredMeetups.push(dataPairs[key]);
+              swappedPairs[dataPairs[key]] = key;
+            }
           }
           const updatedUser = {
-            id: getters.user.id,
+            id: data.child("id").val(),
             registeredMeetups: registeredMeetups,
             fbKeys: swappedPairs,
-            name: getters.user.name,
-            email: getters.user.email,
-            photoURL: getters.user.photoURL
+            name: data.child("name").val(),
+            email: data.child("email").val(),
+            photoURL: data.child("photoURL").val()
           };
           commit("setLoading", false);
           commit("setUser", updatedUser);
@@ -154,7 +156,6 @@ export default {
     logout({ commit }) {
       firebase.auth().signOut();
       commit("setUser", null);
-      //redirect
     },
     signInWithFacebook({ commit }) {
       commit("setLoading", true);
@@ -163,7 +164,7 @@ export default {
         .signInWithPopup(new firebase.auth.FacebookAuthProvider())
         .then(data => {
           const newUser = {
-            id: user.uid,
+            id: data.user.uid,
             registeredMeetups: [],
             fbKeys: {},
             name: data.user.displayName,
@@ -172,8 +173,17 @@ export default {
           };
           commit("setUser", newUser);
 
+          firebase
+            .database()
+            .ref("/users/" + newUser.id)
+            .set(newUser)
+            .then(() => {})
+            .catch(error => {
+              console.log(error);
+              commit("setLoading", false);
+            });
+
           commit("setLoading", false);
-          console.log("user" + data.user.displayName);
         })
         .catch(error => {
           commit("setLoading", false);

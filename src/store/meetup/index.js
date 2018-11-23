@@ -2,15 +2,24 @@ import * as firebase from "firebase";
 
 export default {
   state: {
-    loadedMeetups: []
+    loadedMeetups: [],
+    usersCreatedMeetups: [],
+    userRegeisteredMeetups: []
   },
   mutations: {
+    setUsersCreatedMeetups(state, payload) {
+      state.usersCreatedMeetups = payload;
+    },
     setLoadedMeetups(state, payload) {
       state.loadedMeetups = payload;
+    },
+    setUserRegisteredMeetups(state, payload) {
+      state.userRegeisteredMeetups = payload;
     },
     createMeetup(state, payload) {
       state.loadedMeetups.push(payload);
     },
+
     updateMeetup(state, payload) {
       const meetup = state.loadedMeetups.find(meetup => {
         return meetup.id === payload.id;
@@ -27,6 +36,54 @@ export default {
     }
   },
   actions: {
+    usersRegeisteredMeetups({ commit, getters }) {
+      commit("setLoading", true);
+      let user = getters.user;
+      var meetupIds = user.registrations;
+      console.log("user" + JSON.stringify(user));
+      for (var meetup in meetupIds) {
+        console.log("meetup" + meetup);
+        firebase
+          .database()
+          .ref("meetups")
+          .equalTo(meetup)
+          .on("value", data => {
+            data.forEach(value => {
+              console.log("hge" + JSOn.stringify(value));
+            });
+          });
+
+        console.log("test: " + JSON.stringify(meetups));
+      }
+
+      commit("setLoading", false);
+    },
+    usersCreatedMeetups({ commit, getters }) {
+      commit("setLoading", true);
+      let meetups = [];
+      let userId = getters.user.id;
+      firebase
+        .database()
+        .ref("meetups")
+        .orderByChild("creatorId")
+        .equalTo(userId)
+        .on("value", data => {
+          data.forEach(value => {
+            let obj = value.val();
+            meetups.push({
+              id: value.key,
+              title: obj.title,
+              description: obj.description,
+              imageUrl: obj.imageUrl,
+              date: obj.date,
+              location: obj.location,
+              creatorId: obj.creatorId
+            });
+          });
+          commit("setUsersCreatedMeetups", meetups);
+          commit("setLoading", false);
+        });
+    },
     loadMeetups({ commit }) {
       commit("setLoading", true);
       firebase
@@ -152,6 +209,13 @@ export default {
           return meetup.id == meetupId;
         });
       };
+    },
+    usersCreatedMeetups(state) {
+      //console.log(JSON.stringify(state.usersCreatedMeetups));
+      return state.usersCreatedMeetups;
+    },
+    userRegeisteredMeetups(state) {
+      return state.usersRegeisteredMeetups;
     }
   }
 };

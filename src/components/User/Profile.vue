@@ -1,12 +1,22 @@
 <template>
     <v-container fill-height>
+        <v-layout row wrap v-if="loading">
+            <v-flex xs12 class="text-xs-center">
+                <v-progress-circular
+                indeterminate
+                class="primary--text"
+                :width="7"
+                :size="70"
+                v-if="loading"></v-progress-circular>
+            </v-flex>
+        </v-layout>
         <v-layout row wrap class="info" grid-list-md>       
                 <v-flex  md2-and-up  class="mx-4">
                     <v-layout row>
-                        <v-avatar size="200px" >
+                        <v-avatar size="100px" >
                             <v-img
                                 :src="user.photoURL"
-                                height="200px"
+                                height="100px"
                                 contain
                                 class="mt-5"
                             ></v-img>
@@ -24,10 +34,15 @@
                     <v-layout row>
                         <v-flex shrink>
                             <v-list class="info white--text" >
-                                <div class="headline px-2 accent">Senaste evenemang</div>
-                                
-                                <v-list-tile class="primary" v-for="(meetup, index) in meetups" :key="index">
-                                    {{ meetup }}
+                                <div class="headline px-2 accent">Mina evenemang</div>
+                                <v-list-tile class="primary" :to="/meetups/ + meetup.id" v-for="(meetup, index) in createdMeetups" :key="index">
+                                    {{ meetup.title }}
+                                </v-list-tile>
+                            </v-list>
+                            <v-list class="info white--text" >
+                                <div class="headline px-2 accent">Registrerade evenemang</div>
+                                <v-list-tile class="primary" :to="/meetups/ + meetup.id" v-for="(meetup, index) in registeredMeetups" :key="index">
+                                    {{ meetup.title }}
                                 </v-list-tile>
                             </v-list>
                         </v-flex>
@@ -62,25 +77,30 @@ export default {
   data() {
     return {
       description: "",
-      intrests: [],
-      meetups: []
+      intrests: []
     };
   },
   computed: {
     user() {
       return this.$store.getters.user;
+    },
+    createdMeetups() {
+      return this.$store.getters.usersCreatedMeetups;
+    },
+    registeredMeetups() {
+      return this.$store.getters.userRegeisteredMeetups;
+    },
+    loading() {
+      return this.$store.getters.loading;
     }
   },
   methods: {},
   created() {
+    this.$store.dispatch("usersCreatedMeetups");
+    this.$store.dispatch("usersRegeisteredMeetups");
     this.description =
       "Fotbollspelare som precis avslutat karriären som proffs, söker i liknande situationer Lorem ipsum dolor sit amet consectetur, adipisicing elit. Accusamus officiis nemo at inventore quia, voluptatibus eaque dolor optio commodi reiciendis totam praesentium dolore reprehenderit cumque rem es";
     this.intrests.push("Fotboll", "Klättring", "Löpning");
-    this.meetups.push(
-      "Löpning i parken",
-      "Klättring på rimnershallen",
-      "Tennis i Trollhättan"
-    );
   }
 };
 </script>
