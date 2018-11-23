@@ -4,7 +4,7 @@ export default {
   state: {
     loadedMeetups: [],
     usersCreatedMeetups: [],
-    userRegeisteredMeetups: []
+    usersRegeisteredMeetups: []
   },
   mutations: {
     setUsersCreatedMeetups(state, payload) {
@@ -14,10 +14,13 @@ export default {
       state.loadedMeetups = payload;
     },
     setUserRegisteredMeetups(state, payload) {
-      state.userRegeisteredMeetups = payload;
+      state.usersRegeisteredMeetups = payload;
     },
     createMeetup(state, payload) {
       state.loadedMeetups.push(payload);
+    },
+    registerForMeetup(state, payload) {
+      state.userRegeisteredMeetups.push(payload);
     },
 
     updateMeetup(state, payload) {
@@ -36,25 +39,51 @@ export default {
     }
   },
   actions: {
+    registerForMeetup({ commit, getters }, payload) {
+      // Add the user ID to list of registered users in meetup node
+      const userId = getters.user.id;
+      console.log("userId: " + userId);
+      console.log("meetupId: " + payload);
+      firebase
+        .database()
+        .ref("/meetups/" + payload)
+        .child("/registeredUsers/")
+        .set(userId, () => {
+          console.log("set" + userId);
+        })
+        .then(data => {
+          commit("setLoading", false);
+          commit("registerForMeetup", payload);
+        });
+    },
     usersRegeisteredMeetups({ commit, getters }) {
       commit("setLoading", true);
-      let user = getters.user;
-      var meetupIds = user.registrations;
-      console.log("user" + JSON.stringify(user));
-      for (var meetup in meetupIds) {
-        console.log("meetup" + meetup);
-        firebase
-          .database()
-          .ref("meetups")
-          .equalTo(meetup)
-          .on("value", data => {
-            data.forEach(value => {
-              console.log("hge" + JSOn.stringify(value));
+      let userId = getters.user.id;
+      let meetups = [];
+      console.log("userID: " + userId);
+      firebase
+        .database()
+        .ref("meetups")
+        .orderByChild("registeredUsers")
+        .equalTo(userId)
+        .once("value")
+        .then(data => {
+          data.forEach(value => {
+            console.log("test" + JSON.stringify(value));
+            let obj = value.val();
+            meetups.push({
+              id: value.key,
+              title: obj.title,
+              description: obj.description,
+              imageUrl: obj.imageUrl,
+              date: obj.date,
+              location: obj.location,
+              creatorId: obj.creatorId
             });
           });
-
-        console.log("test: " + JSON.stringify(meetups));
-      }
+          console.log("meetups" + meetups);
+          commit("setUserRegisteredMeetups", meetups);
+        });
 
       commit("setLoading", false);
     },
@@ -67,7 +96,7 @@ export default {
         .ref("meetups")
         .orderByChild("creatorId")
         .equalTo(userId)
-        .on("value", data => {
+        .once("value", data => {
           data.forEach(value => {
             let obj = value.val();
             meetups.push({
@@ -214,7 +243,7 @@ export default {
       //console.log(JSON.stringify(state.usersCreatedMeetups));
       return state.usersCreatedMeetups;
     },
-    userRegeisteredMeetups(state) {
+    usersRegeisteredMeetups(state) {
       return state.usersRegeisteredMeetups;
     }
   }

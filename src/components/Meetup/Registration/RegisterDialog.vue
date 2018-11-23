@@ -55,7 +55,9 @@ export default {
       if (this.userIsRegistered) {
         this.$store.dispatch("unRegisterUserFromMeetup", this.meetupId);
       } else {
-        this.$store.dispatch("registerUserForMeetup", this.meetupId);
+        //this.$store.dispatch("registerUserForMeetup", this.meetupId);
+        this.$store.dispatch("registerForMeetup", this.meetupId);
+        this.registerDialog = false;
       }
     }
   }

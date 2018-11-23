@@ -23,6 +23,30 @@
                                         required></v-text-field>
                                     </v-flex>
                                 </v-layout>
+                                         <v-layout row>
+                                       <v-flex xs12>
+                                        <v-text-field
+                                        dark
+                                        name="name"
+                                        label="Namn"
+                                        id="name"
+                                        v-model="name"
+                                        type="text"
+                                        required></v-text-field>
+                                    </v-flex> 
+                                    </v-layout>
+                                <v-layout row>
+                                        <v-flex xs12>
+                                            <v-text-field
+                                            dark
+                                            name="description"
+                                            label="Beskrivning"
+                                            id="description"
+                                            v-model="description"
+                                            type="text"
+                                            required></v-text-field>
+                                        </v-flex>
+                                    </v-layout>
                                 <v-layout>
                                     <v-flex xs12>
                                         <v-text-field
@@ -48,6 +72,8 @@
                                             :rules="[comparePasswords]"></v-text-field>
                                         </v-flex>
                                     </v-layout>
+                                    
+                                  
                                     <v-layout row>
                                          <v-flex xs12>
                                              
@@ -80,7 +106,9 @@ export default {
     return {
       email: "",
       password: "",
-      confirmPassword: ""
+      confirmPassword: "",
+      name: "",
+      description: ""
     };
   },
   computed: {
@@ -111,7 +139,9 @@ export default {
       //Vuex
       this.$store.dispatch("signUserUp", {
         email: this.email,
-        password: this.password
+        password: this.password,
+        name: this.name,
+        description: this.description
       });
     },
     onDismissed() {

@@ -88,7 +88,7 @@ export default {
       return this.$store.getters.usersCreatedMeetups;
     },
     registeredMeetups() {
-      return this.$store.getters.userRegeisteredMeetups;
+      return this.$store.getters.usersRegeisteredMeetups;
     },
     loading() {
       return this.$store.getters.loading;

@@ -50,7 +50,6 @@ export default {
       commit("setLoading", true);
       const user = getters.user;
       if (!user.fbKeys) {
-        console.log("HERE");
         return;
       }
       const fbKey = user.fbKeys[payload];
@@ -74,14 +73,29 @@ export default {
       firebase
         .auth()
         .createUserWithEmailAndPassword(payload.email, payload.password)
-        .then(user => {
+        .then(data => {
+          console.log("uid" + data.user.uid);
           commit("setLoading", false);
           const newUser = {
-            id: user.uid,
+            id: data.user.uid,
             registeredMeetups: [],
-            fbKeys: {}
+            fbKeys: {},
+            name: payload.name,
+            description: payload.description,
+            email: payload.email
           };
+
+          // Save to users table
           commit("setUser", newUser);
+          firebase
+            .database()
+            .ref("/users/" + newUser.id)
+            .set(newUser)
+            .then(() => {})
+            .catch(error => {
+              console.log(error);
+              commit("setLoading", false);
+            });
         })
         .catch(error => {
           commit("setLoading", false);
