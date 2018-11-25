@@ -22,12 +22,22 @@
                             v-model="editedTitle"
                             required>
                             </v-text-field>
+                            <v-flex xs6 d-flex>
+                             <v-select
+                               :items="categories"
+                               color="primary"
+                               label="Kategori"
+                               light
+                               v-model="category"
+                              ></v-select>
+                                </v-flex>
                             <v-textarea
                             name="description"
                             label="Description"
                             id="description"
                             v-model="editedDescription"
                             required></v-textarea>
+                            
                         </v-card-text>
                     </v-flex>
                 </v-layout>
@@ -49,11 +59,17 @@
 <script>
 export default {
   props: ["meetup"],
+  computed: {
+    categories() {
+      return this.$store.getters.getCategoires;
+    }
+  },
   data() {
     return {
       editedTitle: this.meetup.title,
       editedDescription: this.meetup.description,
-      editDialog: false
+      editDialog: false,
+      category: this.meetup.category
     };
   },
   methods: {

@@ -39,6 +39,7 @@
                                     </v-avatar>  
 
                             </router-link>
+                            <div class="white--text"><strong>{{meetup.category}}</strong></div>
                             <div class="white--text">{{meetup.date | date}} - {{meetup.location}}</div>
                             
                             <div>

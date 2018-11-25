@@ -84,7 +84,7 @@ export default {
           { icon: "room", title: "Skapa Evenemang", link: "/meetups/new" },
           {
             icon: "person",
-            title: "Min Profil",
+            title: this.user.name,
             link: "/profile/" + this.user.id
           }
         ];

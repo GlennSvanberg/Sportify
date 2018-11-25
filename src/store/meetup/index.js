@@ -4,7 +4,8 @@ export default {
   state: {
     loadedMeetups: [],
     usersCreatedMeetups: [],
-    usersRegeisteredMeetups: []
+    usersRegeisteredMeetups: [],
+    categories: ["Fotboll", "Tennis", "Bandy", "Golf"]
   },
   mutations: {
     setUsersCreatedMeetups(state, payload) {
@@ -26,7 +27,6 @@ export default {
       const meetups = state.usersRegeisteredMeetups;
       meetups.splice(meetups.findIndex(i => i.id === payload.id), 1);
     },
-
     updateMeetup(state, payload) {
       const meetup = state.loadedMeetups.find(meetup => {
         return meetup.id === payload.id;
@@ -44,7 +44,6 @@ export default {
   },
   actions: {
     usersRegeisteredMeetups({ commit, getters }) {
-      console.log("usersRegisteredMeetups");
       commit("setLoading", true);
       let userId = getters.user.id;
       let meetups = [];
@@ -65,7 +64,8 @@ export default {
                     imageUrl: obj.imageUrl,
                     date: obj.date,
                     location: obj.location,
-                    creatorId: obj.creatorId
+                    creatorId: obj.creatorId,
+                    category: obj.category
                   });
                 }
               }
@@ -94,7 +94,8 @@ export default {
               imageUrl: obj.imageUrl,
               date: obj.date,
               location: obj.location,
-              creatorId: obj.creatorId
+              creatorId: obj.creatorId,
+              category: obj.category
             });
           });
           commit("setUsersCreatedMeetups", meetups);
@@ -118,7 +119,8 @@ export default {
               imageUrl: obj[key].imageUrl,
               date: obj[key].date,
               location: obj[key].location,
-              creatorId: obj[key].creatorId
+              creatorId: obj[key].creatorId,
+              category: obj[key].category
             });
             dispatch("loadUser", obj[key].creatorId);
           }
@@ -136,7 +138,8 @@ export default {
         location: payload.location,
         description: payload.description,
         date: payload.date.toISOString(),
-        creatorId: getters.user.id
+        creatorId: getters.user.id,
+        category: payload.category
       };
       let imageUrl;
       let key;
@@ -197,6 +200,10 @@ export default {
       if (payload.date) {
         updateObj.date = payload.date;
       }
+      if (payload.category) {
+        updateObj.category = payload.category;
+      }
+
       firebase
         .database()
         .ref("meetups")
@@ -233,6 +240,10 @@ export default {
     },
     usersRegeisteredMeetups(state) {
       return state.usersRegeisteredMeetups;
+    },
+
+    getCategoires(state) {
+      return state.categories;
     }
   }
 };

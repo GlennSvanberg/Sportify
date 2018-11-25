@@ -102,6 +102,7 @@ export default {
         });
     },
     autoSignIn({ commit }, payload) {
+      commit("setLoading", true);
       commit("setUser", {
         id: payload.uid,
         name: payload.displayName,
@@ -109,6 +110,7 @@ export default {
         photoURL: payload.photoURL,
         description: payload.description
       });
+      commit("setLoading", false);
     },
     fetchUserData({ commit, getters }) {
       commit("setLoading", true);
@@ -175,7 +177,6 @@ export default {
     },
     userById(state) {
       return id => {
-        console.log("testID: " + id);
         var user = state.loadedUsers.find(u => u.id === id);
         return user;
       };

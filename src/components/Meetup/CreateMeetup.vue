@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+    <v-container grid-list>
         <v-layout row>
             <v-flex xs12 sm6 offset-sm3>
                 <h2 class="white--text">Skapa Evenemang</h2>
@@ -16,7 +16,10 @@
                             label="Titel"
                             id="title"
                             v-model="title"
-                            required></v-text-field>
+                            required
+                            box
+                            color="white"
+                            ></v-text-field>
                         </v-flex>
                     </v-layout>
                     <v-layout row>
@@ -27,19 +30,35 @@
                             label="Plats"
                             id="location"
                             v-model="location"
-                            required></v-text-field>
+                            required
+                            color="white"
+                            box></v-text-field>
                         </v-flex>
                     </v-layout>
-                    <v-layout row>
+                    <v-layout row wrap >
                         <v-flex xs12 md6 offset-sm3>
-                            <v-btn raised class="accent" @click="onPickFile">Ladda upp bild</v-btn>
-                            <input 
-                            dark
-                            type="file" 
-                            style="display: none;" 
-                            ref="fileInput" 
-                            accept="image/*"
-                            @change="onFilePicked">
+                            <v-layout row wrap>
+                                <v-flex xs6 d-flex>
+                                    <v-select
+                                        :items="categories"
+                                        color="white"
+                                        label="Kategori"
+                                        dark
+                                        v-model="category"
+                                        ></v-select>
+                                </v-flex>
+                                <v-spacer></v-spacer>
+                                <v-flex xs4 d-flex>
+                                    <v-btn raised class="accent" @click="onPickFile">Ladda upp bild</v-btn>
+                                    <input 
+                                        dark
+                                        type="file" 
+                                        style="display: none;" 
+                                        ref="fileInput" 
+                                        accept="image/*"
+                                        @change="onFilePicked">
+                                </v-flex>
+                            </v-layout>
                         </v-flex>
                     </v-layout>
                     <v-layout row>
@@ -50,7 +69,9 @@
                             label="Beskrivning"
                             id="description"
                             v-model="description"
-                            required></v-textarea>
+                            required
+                            box
+                            color="white"></v-textarea>
                         </v-flex>
                     </v-layout>
                     <v-layout row>
@@ -67,6 +88,7 @@
                                 landscape 
                                 color="info"
                                 full-width
+                                max-heigh="100px"
                             ></v-date-picker>
                         </v-flex>
                     </v-layout>
@@ -110,16 +132,21 @@ export default {
       date: new Date().toISOString().substr(0, 10),
       time: new Date(),
       image: null,
-      picker: new Date().toISOString().substr(0, 10)
+      picker: new Date().toISOString().substr(0, 10),
+      category: ""
     };
   },
   computed: {
+    categories() {
+      return this.$store.getters.getCategoires;
+    },
     formIsValid() {
       return (
         this.title !== "" &&
         this.location !== "" &&
         this.imageUrl !== "" &&
-        this.description !== ""
+        this.description !== "" &&
+        this.category !== ""
       );
     },
     submittableDateTime() {
@@ -149,7 +176,8 @@ export default {
         location: this.location,
         image: this.image,
         description: this.description,
-        date: this.submittableDateTime
+        date: this.submittableDateTime,
+        category: this.category
       };
       this.$store.dispatch("createMeetup", meetupData);
       this.$router.push("/meetups");
