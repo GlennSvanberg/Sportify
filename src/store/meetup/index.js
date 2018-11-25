@@ -13,14 +13,18 @@ export default {
     setLoadedMeetups(state, payload) {
       state.loadedMeetups = payload;
     },
-    setUserRegisteredMeetups(state, payload) {
+    setUsersRegisteredMeetups(state, payload) {
       state.usersRegeisteredMeetups = payload;
     },
     createMeetup(state, payload) {
       state.loadedMeetups.push(payload);
     },
     registerForMeetup(state, payload) {
-      state.userRegeisteredMeetups.push(payload);
+      state.usersRegeisteredMeetups.push(payload);
+    },
+    unRegisterFromMeetup(state, payload) {
+      const meetups = state.usersRegeisteredMeetups;
+      meetups.splice(meetups.findIndex(i => i.id === payload.id), 1);
     },
 
     updateMeetup(state, payload) {
@@ -41,51 +45,60 @@ export default {
   actions: {
     registerForMeetup({ commit, getters }, payload) {
       // Add the user ID to list of registered users in meetup node
+      commit("setLoading", true);
       const userId = getters.user.id;
-      console.log("userId: " + userId);
-      console.log("meetupId: " + payload);
       firebase
         .database()
         .ref("/meetups/" + payload)
-        .child("/registeredUsers/")
-        .set(userId, () => {
-          console.log("set" + userId);
-        })
+        .child("/registeredUsers/" + userId)
+        .set({ id: "haha" })
         .then(data => {
           commit("setLoading", false);
           commit("registerForMeetup", payload);
         });
     },
+    unRegisterFromMeetup({ commit, getters }, payload) {
+      commit("setLoading", true);
+      const userId = getters.user.id;
+
+      firebase
+        .database()
+        .ref("/meetups/" + payload + "/registeredUsers/" + userId)
+        .remove();
+      commit("unRegisterFromMeetup", payload);
+      commit("setLoading", false);
+    },
     usersRegeisteredMeetups({ commit, getters }) {
+      console.log("usersRegisteredMeetups");
       commit("setLoading", true);
       let userId = getters.user.id;
       let meetups = [];
-      console.log("userID: " + userId);
       firebase
         .database()
         .ref("meetups")
-        .orderByChild("registeredUsers")
-        .equalTo(userId)
-        .once("value")
-        .then(data => {
+        .once("value", data => {
           data.forEach(value => {
-            console.log("test" + JSON.stringify(value));
-            let obj = value.val();
-            meetups.push({
-              id: value.key,
-              title: obj.title,
-              description: obj.description,
-              imageUrl: obj.imageUrl,
-              date: obj.date,
-              location: obj.location,
-              creatorId: obj.creatorId
-            });
+            if (value.val().registeredUsers != undefined) {
+              var users = value.val().registeredUsers;
+              for (var user in users) {
+                if (user === userId) {
+                  var obj = value.val();
+                  meetups.push({
+                    id: value.key,
+                    title: obj.title,
+                    description: obj.description,
+                    imageUrl: obj.imageUrl,
+                    date: obj.date,
+                    location: obj.location,
+                    creatorId: obj.creatorId
+                  });
+                }
+              }
+            }
           });
-          console.log("meetups" + meetups);
-          commit("setUserRegisteredMeetups", meetups);
+          commit("setUsersRegisteredMeetups", meetups);
+          commit("setLoading", false);
         });
-
-      commit("setLoading", false);
     },
     usersCreatedMeetups({ commit, getters }) {
       commit("setLoading", true);
@@ -240,7 +253,7 @@ export default {
       };
     },
     usersCreatedMeetups(state) {
-      //console.log(JSON.stringify(state.usersCreatedMeetups));
+      console.log("HEJ: " + JSON.stringify(state.usersCreatedMeetups));
       return state.usersCreatedMeetups;
     },
     usersRegeisteredMeetups(state) {

@@ -41,11 +41,15 @@ export default {
       registerDialog: false
     };
   },
+  created() {
+    //this.$store.dispatch("usersRegeisteredMeetups");
+  },
   computed: {
     userIsRegistered() {
+      console.log("this meetupId" + this.meetupId);
       return (
-        this.$store.getters.user.registeredMeetups.findIndex(meetupId => {
-          return meetupId === this.meetupId;
+        this.$store.getters.usersRegeisteredMeetups.findIndex(meetup => {
+          return meetup.id === this.meetupId;
         }) >= 0
       );
     }
@@ -53,9 +57,9 @@ export default {
   methods: {
     onAgree() {
       if (this.userIsRegistered) {
-        this.$store.dispatch("unRegisterUserFromMeetup", this.meetupId);
+        this.$store.dispatch("unRegisterFromMeetup", this.meetupId);
+        this.registerDialog = false;
       } else {
-        //this.$store.dispatch("registerUserForMeetup", this.meetupId);
         this.$store.dispatch("registerForMeetup", this.meetupId);
         this.registerDialog = false;
       }

@@ -11,6 +11,19 @@
                     <v-card-text>
                         <v-container>
                             <form @submit.prevent="onSignUp">
+                                    <v-layout row>
+                                       <v-flex xs12>
+                                        <v-text-field
+                                        dark
+                                        name="name"
+                                        label="Namn"
+                                        id="name"
+                                        v-model="name"
+                                        type="text"
+                                        required
+                                        ></v-text-field>
+                                    </v-flex> 
+                                    </v-layout>
                                 <v-layout row>
                                     <v-flex xs12>
                                         <v-text-field
@@ -20,31 +33,21 @@
                                         id="email"
                                         v-model="email"
                                         type="email"
-                                        required></v-text-field>
+                                        required
+                                        ></v-text-field>
                                     </v-flex>
                                 </v-layout>
-                                         <v-layout row>
-                                       <v-flex xs12>
-                                        <v-text-field
-                                        dark
-                                        name="name"
-                                        label="Namn"
-                                        id="name"
-                                        v-model="name"
-                                        type="text"
-                                        required></v-text-field>
-                                    </v-flex> 
-                                    </v-layout>
+                                     
                                 <v-layout row>
                                         <v-flex xs12>
-                                            <v-text-field
+                                            <v-textarea
                                             dark
                                             name="description"
                                             label="Beskrivning"
                                             id="description"
                                             v-model="description"
                                             type="text"
-                                            required></v-text-field>
+                                            required></v-textarea>
                                         </v-flex>
                                     </v-layout>
                                 <v-layout>

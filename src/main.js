@@ -51,6 +51,8 @@ new Vue({
       if (user) {
         this.$store.dispatch("autoSignIn", user);
         this.$store.dispatch("fetchUserData");
+        this.$store.dispatch("usersRegeisteredMeetups");
+        this.$store.dispatch("usersCreatedMeetups");
       }
     });
     this.$store.dispatch("loadMeetups");
