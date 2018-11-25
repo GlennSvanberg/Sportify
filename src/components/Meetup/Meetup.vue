@@ -19,25 +19,28 @@
                             <v-spacer></v-spacer>
                             <app-edit-meetup-details-dialog :meetup="meetup"></app-edit-meetup-details-dialog>
                         </template>
+                        
                     </v-card-title>
-                       <v-card-media
+                       <v-img
                           :src="meetup.imageUrl"
                           height="400px"
                           contain
-                        ></v-card-media>
+                        ></v-img>
                         <v-card-text>
+
                             <div class="white--text">{{meetup.date | date}} - {{meetup.location}}</div>
+                            <div class="white--text">Arrangeras av: {{creator.name}}</div>
                             <div>
                                 <app-edit-meetup-date-dialog 
                                 :meetup="meetup" 
-                                v-if="userIsAuthenticated"
+                                v-if="userIsCreator"
                                 ></app-edit-meetup-date-dialog>
                                 <app-edit-meetup-time-dialog
                                 :meetup="meetup"
-                                v-if="userIsAuthenticated"
+                                v-if="userIsCreator"
                                 ></app-edit-meetup-time-dialog>
                                 </div>
-                            <div class="white--text">{{meetup.description}}</div>
+                            <div class="white--text">Beskrivning: {{meetup.description}}</div>
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
@@ -52,6 +55,9 @@
 export default {
   props: ["id"],
   computed: {
+    creator() {
+      return this.$store.getters.userById(this.meetup.creatorId);
+    },
     meetup() {
       return this.$store.getters.loadedMeetup(this.id);
     },

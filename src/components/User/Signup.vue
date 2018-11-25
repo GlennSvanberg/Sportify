@@ -80,7 +80,7 @@
                                     <v-layout row>
                                          <v-flex xs12>
                                              
-                                            <v-btn class="accent" type="submit" :disabled="loading" :loading="loading">Registrera
+                                            <v-btn class="accent" type="submit" :disabled="!formIsValid">Registrera
                                                 <span slot="loader" class="custom-loader">
                                                     <v-icon light>cached</v-icon>
                                                 </span>
@@ -95,9 +95,7 @@
                             </form>
                         </v-container>
                     </v-card-text>
-                    <v-card-actions>
-                        
-                    </v-card-actions>
+
                 </v-card>
             </v-flex>
         </v-layout>
@@ -115,6 +113,14 @@ export default {
     };
   },
   computed: {
+    formIsValid() {
+      return (
+        this.email !== "" &&
+        this.password !== "" &&
+        this.description !== "" &&
+        this.name !== ""
+      );
+    },
     comparePasswords() {
       return this.password !== this.confirmPassword
         ? "Passwords do not match"

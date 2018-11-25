@@ -3,14 +3,50 @@ import { resolve } from "path";
 
 export default {
   state: {
-    user: null
+    user: null,
+    loadedUsers: []
   },
   mutations: {
     setUser(state, payload) {
       state.user = payload;
+    },
+    setLoadedUsers(state, payload) {
+      const users = state.loadedUsers;
+      var found = false;
+      for (var i = 0; i < users.length; i++) {
+        if (users[i].id === payload.id) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        users.push(payload);
+      }
     }
   },
   actions: {
+    loadUser({ commit, getters }, payload) {
+      commit("setLoading", true);
+      firebase
+        .database()
+        .ref("/users/" + payload)
+        .once("value")
+        .then(data => {
+          const updatedUser = {
+            id: data.child("id").val(),
+            name: data.child("name").val(),
+            email: data.child("email").val(),
+            photoURL: data.child("photoURL").val()
+          };
+          //console.log("test" + JSON.stringify(updatedUser));
+          commit("setLoading", false);
+          commit("setLoadedUsers", updatedUser);
+        })
+        .catch(error => {
+          console.log(error);
+          commit("setLoading", false);
+        });
+    },
     signUserUp({ commit }, payload) {
       commit("setLoading", true);
       commit("clearError");
@@ -132,6 +168,13 @@ export default {
   getters: {
     user(state) {
       return state.user;
+    },
+    userById(state) {
+      return id => {
+        console.log("testID: " + id);
+        var user = state.loadedUsers.find(u => u.id === id);
+        return user;
+      };
     }
   }
 };

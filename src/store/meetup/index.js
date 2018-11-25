@@ -43,31 +43,6 @@ export default {
     }
   },
   actions: {
-    registerForMeetup({ commit, getters }, payload) {
-      // Add the user ID to list of registered users in meetup node
-      commit("setLoading", true);
-      const userId = getters.user.id;
-      firebase
-        .database()
-        .ref("/meetups/" + payload)
-        .child("/registeredUsers/" + userId)
-        .set({ id: "haha" })
-        .then(data => {
-          commit("setLoading", false);
-          commit("registerForMeetup", payload);
-        });
-    },
-    unRegisterFromMeetup({ commit, getters }, payload) {
-      commit("setLoading", true);
-      const userId = getters.user.id;
-
-      firebase
-        .database()
-        .ref("/meetups/" + payload + "/registeredUsers/" + userId)
-        .remove();
-      commit("unRegisterFromMeetup", payload);
-      commit("setLoading", false);
-    },
     usersRegeisteredMeetups({ commit, getters }) {
       console.log("usersRegisteredMeetups");
       commit("setLoading", true);
@@ -126,7 +101,7 @@ export default {
           commit("setLoading", false);
         });
     },
-    loadMeetups({ commit }) {
+    loadMeetups({ commit, dispatch }) {
       commit("setLoading", true);
       firebase
         .database()
@@ -145,6 +120,7 @@ export default {
               location: obj[key].location,
               creatorId: obj[key].creatorId
             });
+            dispatch("loadUser", obj[key].creatorId);
           }
           commit("setLoadedMeetups", meetups);
           commit("setLoading", false);
@@ -253,7 +229,6 @@ export default {
       };
     },
     usersCreatedMeetups(state) {
-      console.log("HEJ: " + JSON.stringify(state.usersCreatedMeetups));
       return state.usersCreatedMeetups;
     },
     usersRegeisteredMeetups(state) {
