@@ -4,7 +4,7 @@ export default {
   state: {
     loadedMeetups: [],
     usersCreatedMeetups: [],
-    usersRegeisteredMeetups: [],
+    usersRegisteredMeetups: [],
     categories: ["Fotboll", "Tennis", "Bandy", "Golf"]
   },
   mutations: {
@@ -15,17 +15,20 @@ export default {
       state.loadedMeetups = payload;
     },
     setUsersRegisteredMeetups(state, payload) {
-      state.usersRegeisteredMeetups = payload;
+      state.usersRegisteredMeetups = payload;
     },
     createMeetup(state, payload) {
       state.loadedMeetups.push(payload);
     },
     registerForMeetup(state, payload) {
-      state.usersRegeisteredMeetups.push(payload);
+      console.log("register mutation" + payload);
+      console.log("register mutation2" + state.usersRegisteredMeetups);
+      state.usersRegisteredMeetups.push(payload);
+      console.log("register mutation1" + state.usersRegisteredMeetups);
     },
     unRegisterFromMeetup(state, payload) {
-      const meetups = state.usersRegeisteredMeetups;
-      meetups.splice(meetups.findIndex(i => i.id === payload.id), 1);
+      const meetups = state.usersRegisteredMeetups;
+      meetups.splice(meetups.findIndex(i => i.id === payload), 1);
     },
     updateMeetup(state, payload) {
       const meetup = state.loadedMeetups.find(meetup => {
@@ -43,7 +46,35 @@ export default {
     }
   },
   actions: {
-    usersRegeisteredMeetups({ commit, getters }) {
+    registerForMeetup({ commit, getters }, payload) {
+      // Add the user ID to list of registered users in meetup node
+      console.log("register action");
+      commit("setLoading", true);
+      const userId = getters.user.id;
+      firebase
+        .database()
+        .ref("/meetups/" + payload)
+        .child("/registeredUsers/" + userId)
+        .set({ id: "haha" })
+        .then(data => {
+          console.log("payload" + payload);
+          commit("registerForMeetup", payload);
+          commit("setLoading", false);
+        });
+    },
+    unRegisterFromMeetup({ commit, getters }, payload) {
+      commit("setLoading", true);
+      const userId = getters.user.id;
+      console.log("goghere" + payload + " userID" + userId);
+      firebase
+        .database()
+        .ref("/meetups/" + payload + "/registeredUsers/" + userId)
+        .remove();
+      console.log("payload Unregister" + payload);
+      commit("unRegisterFromMeetup", payload);
+      commit("setLoading", false);
+    },
+    usersRegisteredMeetups({ commit, getters }) {
       commit("setLoading", true);
       let userId = getters.user.id;
       let meetups = [];
@@ -238,8 +269,8 @@ export default {
     usersCreatedMeetups(state) {
       return state.usersCreatedMeetups;
     },
-    usersRegeisteredMeetups(state) {
-      return state.usersRegeisteredMeetups;
+    usersRegisteredMeetups(state) {
+      return state.usersRegisteredMeetups;
     },
 
     getCategoires(state) {

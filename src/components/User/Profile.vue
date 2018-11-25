@@ -90,7 +90,7 @@ export default {
       return this.$store.getters.usersCreatedMeetups;
     },
     registeredMeetups() {
-      return this.$store.getters.usersRegeisteredMeetups;
+      return this.$store.getters.usersRegisteredMeetups;
     },
     loading() {
       return this.$store.getters.loading;
@@ -100,7 +100,7 @@ export default {
   created() {
     console.log("created" + this.id);
     this.$store.dispatch("usersCreatedMeetups");
-    this.$store.dispatch("usersRegeisteredMeetups");
+    this.$store.dispatch("usersRegisteredMeetups");
     this.description =
       "Fotbollspelare som precis avslutat karriären som proffs, söker i liknande situationer Lorem ipsum dolor sit amet consectetur, adipisicing elit. Accusamus officiis nemo at inventore quia, voluptatibus eaque dolor optio commodi reiciendis totam praesentium dolore reprehenderit cumque rem es";
     this.intrests.push("Fotboll", "Klättring", "Löpning");

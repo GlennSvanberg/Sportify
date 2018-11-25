@@ -41,14 +41,10 @@ export default {
       registerDialog: false
     };
   },
-  created() {
-    //this.$store.dispatch("usersRegeisteredMeetups");
-  },
   computed: {
     userIsRegistered() {
-      console.log("this meetupId" + this.meetupId);
       return (
-        this.$store.getters.usersRegeisteredMeetups.findIndex(meetup => {
+        this.$store.getters.usersRegisteredMeetups.findIndex(meetup => {
           return meetup.id === this.meetupId;
         }) >= 0
       );
@@ -61,6 +57,7 @@ export default {
         this.registerDialog = false;
       } else {
         this.$store.dispatch("registerForMeetup", this.meetupId);
+        console.log("register")
         this.registerDialog = false;
       }
     }
