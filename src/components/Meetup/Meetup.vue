@@ -26,10 +26,21 @@
                           height="400px"
                           contain
                         ></v-img>
-                        <v-card-text>
+                        <v-card-text> 
+                            <router-link tag="v-flex" :to="/profile/ + creator.id" :style="{ cursor: 'pointer'}">
+                            <div class="white--text inline">Arrangeras av:</div>
+                                    <v-avatar class="ml-4 mb-4">
+                                        <v-img
+                                        :src="creator.photoURL">
+                                        </v-img>
+                                        <v-flex >
+                                            <div  class="white--text">{{creator.name}}</div>
+                                        </v-flex>
+                                    </v-avatar>  
 
+                            </router-link>
                             <div class="white--text">{{meetup.date | date}} - {{meetup.location}}</div>
-                            <div class="white--text">Arrangeras av: {{creator.name}}</div>
+                            
                             <div>
                                 <app-edit-meetup-date-dialog 
                                 :meetup="meetup" 

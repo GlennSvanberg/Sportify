@@ -82,7 +82,11 @@ export default {
             link: "/meetups"
           },
           { icon: "room", title: "Skapa Evenemang", link: "/meetups/new" },
-          { icon: "person", title: "Min Profil", link: "/profile" }
+          {
+            icon: "person",
+            title: "Min Profil",
+            link: "/profile/" + this.user.id
+          }
         ];
       }
       return menuItems;

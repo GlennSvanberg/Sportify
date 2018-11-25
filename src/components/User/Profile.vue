@@ -14,12 +14,13 @@
                 <v-flex  md2-and-up  class="mx-4">
                     <v-layout row>
                         <v-avatar size="100px" >
+                            
                             <v-img
                                 :src="user.photoURL"
                                 height="100px"
                                 contain
                                 class="mt-5"
-                            ></v-img>
+                            ></v-img> 
                         </v-avatar>
                     </v-layout>
                     <v-layout row >
@@ -34,7 +35,7 @@
                     <v-layout row>
                         <v-flex shrink>
                             <v-list class="info white--text" >
-                                <div class="headline px-2 accent">Mina evenemang</div>
+                                <div class="headline px-2 accent">Skapade evenemang</div>
                                 <v-list-tile class="primary" :to="/meetups/ + meetup.id" v-for="(meetup, index) in createdMeetups" :key="index">
                                     {{ meetup.title }}
                                 </v-list-tile>
@@ -56,7 +57,7 @@
                         <div>
                         <div class="headline mb-4">{{ user.name}}</div>
                         <div class="mb-4">Epost: {{ user.email}}</div>
-                        <div class="">{{ description }}</div>
+                        <div class="">{{ user.description }}</div>
                         <div class="mt-4 headline">Mina intressen: </div>
                         <v-list class="info white--text" dense>
                             <v-list-tile v-for="(intrest, index) in intrests" :key="index">
@@ -74,6 +75,7 @@
 </template>
 <script>
 export default {
+  props: ["id"],
   data() {
     return {
       description: "",
@@ -82,7 +84,7 @@ export default {
   },
   computed: {
     user() {
-      return this.$store.getters.user;
+      return this.$store.getters.userById(this.id);
     },
     createdMeetups() {
       return this.$store.getters.usersCreatedMeetups;
@@ -96,6 +98,7 @@ export default {
   },
   methods: {},
   created() {
+    console.log("created" + this.id);
     this.$store.dispatch("usersCreatedMeetups");
     this.$store.dispatch("usersRegeisteredMeetups");
     this.description =

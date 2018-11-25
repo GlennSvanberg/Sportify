@@ -36,7 +36,8 @@ export default {
             id: data.child("id").val(),
             name: data.child("name").val(),
             email: data.child("email").val(),
-            photoURL: data.child("photoURL").val()
+            photoURL: data.child("photoURL").val(),
+            description: data.child("description").val()
           };
           //console.log("test" + JSON.stringify(updatedUser));
           commit("setLoading", false);
@@ -105,7 +106,8 @@ export default {
         id: payload.uid,
         name: payload.displayName,
         email: payload.email,
-        photoURL: payload.photoURL
+        photoURL: payload.photoURL,
+        description: payload.description
       });
     },
     fetchUserData({ commit, getters }) {
@@ -119,7 +121,8 @@ export default {
             id: data.child("id").val(),
             name: data.child("name").val(),
             email: data.child("email").val(),
-            photoURL: data.child("photoURL").val()
+            photoURL: data.child("photoURL").val(),
+            description: data.child("description").val()
           };
           commit("setLoading", false);
           commit("setUser", updatedUser);
@@ -143,7 +146,8 @@ export default {
             id: data.user.uid,
             name: data.user.displayName,
             email: data.user.email,
-            photoURL: data.user.photoURL
+            photoURL: data.user.photoURL,
+            description: data.user.description
           };
           commit("setUser", newUser);
 
