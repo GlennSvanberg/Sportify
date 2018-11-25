@@ -57,7 +57,7 @@ export default {
         this.registerDialog = false;
       } else {
         this.$store.dispatch("registerForMeetup", this.meetupId);
-        console.log("register")
+        this.$store.dispatch("usersRegisteredMeetups");
         this.registerDialog = false;
       }
     }

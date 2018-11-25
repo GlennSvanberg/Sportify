@@ -21,10 +21,7 @@ export default {
       state.loadedMeetups.push(payload);
     },
     registerForMeetup(state, payload) {
-      console.log("register mutation" + payload);
-      console.log("register mutation2" + state.usersRegisteredMeetups);
       state.usersRegisteredMeetups.push(payload);
-      console.log("register mutation1" + state.usersRegisteredMeetups);
     },
     unRegisterFromMeetup(state, payload) {
       const meetups = state.usersRegisteredMeetups;
@@ -48,7 +45,7 @@ export default {
   actions: {
     registerForMeetup({ commit, getters }, payload) {
       // Add the user ID to list of registered users in meetup node
-      console.log("register action");
+
       commit("setLoading", true);
       const userId = getters.user.id;
       firebase
@@ -57,7 +54,6 @@ export default {
         .child("/registeredUsers/" + userId)
         .set({ id: "haha" })
         .then(data => {
-          console.log("payload" + payload);
           commit("registerForMeetup", payload);
           commit("setLoading", false);
         });
@@ -65,12 +61,10 @@ export default {
     unRegisterFromMeetup({ commit, getters }, payload) {
       commit("setLoading", true);
       const userId = getters.user.id;
-      console.log("goghere" + payload + " userID" + userId);
       firebase
         .database()
         .ref("/meetups/" + payload + "/registeredUsers/" + userId)
         .remove();
-      console.log("payload Unregister" + payload);
       commit("unRegisterFromMeetup", payload);
       commit("setLoading", false);
     },

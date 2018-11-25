@@ -55,7 +55,6 @@ export default {
         .auth()
         .createUserWithEmailAndPassword(payload.email, payload.password)
         .then(data => {
-          console.log("uid" + data.user.uid);
           commit("setLoading", false);
           const newUser = {
             id: data.user.uid,

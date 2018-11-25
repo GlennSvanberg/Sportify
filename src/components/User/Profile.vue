@@ -36,18 +36,31 @@
                         <v-flex shrink>
                             <v-list class="info white--text" >
                                 <div class="headline px-2 accent">Skapade evenemang</div>
-                                <v-list-tile class="primary" :to="/meetups/ + meetup.id" v-for="(meetup, index) in createdMeetups" :key="index">
-                                    {{ meetup.title }}
+                                <v-list-tile class="primary py-1" :to="/meetups/ + meetup.id" v-for="(meetup, index) in createdMeetups" :key="index">
+                                    <v-list-tile-content>
+                                        <v-list-tile-title>
+                                            {{meetup.category}} - {{ meetup.title }}
+                                        </v-list-tile-title>
+                                        <v-list-tile-sub-title class="white--text">
+                                            {{meetup.date | date}}
+                                        </v-list-tile-sub-title>
+                                    </v-list-tile-content>
                                 </v-list-tile>
                             </v-list>
                             <v-list class="info white--text" >
                                 <div class="headline px-2 accent">Registrerade evenemang</div>
-                                <v-list-tile class="primary" :to="/meetups/ + meetup.id" v-for="(meetup, index) in registeredMeetups" :key="index">
-                                    {{ meetup.title }}
-                                </v-list-tile>
-                            </v-list>
-                        </v-flex>
-                        
+                                    <v-list-tile class="primary py-1" :to="/meetups/ + meetup.id" v-for="(meetup, index) in registeredMeetups" :key="index">
+                                        <v-list-tile-content>
+                                            <v-list-tile-title>
+                                                {{meetup.category}} - {{ meetup.title }}
+                                            </v-list-tile-title>
+                                            <v-list-tile-sub-title class="white--text">
+                                                {{meetup.date | date}}
+                                            </v-list-tile-sub-title>
+                                        </v-list-tile-content>
+                                    </v-list-tile>
+                                </v-list>
+                            </v-flex>
                     </v-layout>
                     
                 </v-flex>
@@ -98,7 +111,6 @@ export default {
   },
   methods: {},
   created() {
-    console.log("created" + this.id);
     this.$store.dispatch("usersCreatedMeetups");
     this.$store.dispatch("usersRegisteredMeetups");
     this.description =
