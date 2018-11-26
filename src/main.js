@@ -15,15 +15,26 @@ import RegisterDialog from "./components/Meetup/Registration/RegisterDialog.vue"
 
 Vue.use(Vuetify, {
   theme: {
-    primary: "#3A689C",
+    primary: "#222935", //dark grey
+    accent: "#205b68", // dark turkos
+    secondary: "#7a040a", // red
+    info: "#474747", //grey
+    warning: "#FFA000",
+    error: "#D50000",
+    success: "#66BB6A"
+  }
+});
+
+/*
+Original colors
+primary: "#3A689C",
     accent: "#16963F",
     secondary: "#A3B3BD",
     info: "#3987db",
     warning: "#FFA000",
     error: "#D50000",
     success: "#66BB6A"
-  }
-});
+*/
 Vue.config.productionTip = false;
 
 Vue.filter("date", DateFilter);

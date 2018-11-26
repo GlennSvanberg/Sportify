@@ -1,125 +1,122 @@
 <template>
-    <v-container grid-list>
-        <v-layout row>
-            <v-flex xs12 sm6 offset-sm3>
-                <h2 class="white--text">Skapa Evenemang</h2>
+  <v-container grid-list class>
+    <v-layout row>
+      <v-flex xs12 class="info px-4 py-4">
+        <form @submit.prevent="onCreateMeetup">
+          <v-layout row wrap>
+            <v-flex xs12 lg6 class="px-3">
+              <h2 class="white--text">Skapa Evenemang</h2>
+              <v-layout row>
+                <v-flex>
+                  <v-text-field
+                    dark
+                    name="title"
+                    label="Titel"
+                    id="title"
+                    v-model="title"
+                    required
+                    box
+                    color="white"
+                  ></v-text-field>
+                </v-flex>
+              </v-layout>
+              <v-layout row>
+                <v-flex>
+                  <v-text-field
+                    dark
+                    name="location"
+                    label="Plats"
+                    id="location"
+                    v-model="location"
+                    required
+                    color="white"
+                    box
+                  ></v-text-field>
+                </v-flex>
+              </v-layout>
+              <v-layout row wrap>
+                <v-flex>
+                  <v-layout row wrap>
+                    <v-flex xs4 d-flex>
+                      <v-btn raised class="accent" @click="onPickFile">Ladda upp bild</v-btn>
+                      <input
+                        dark
+                        type="file"
+                        style="display: none;"
+                        ref="fileInput"
+                        accept="image/*"
+                        @change="onFilePicked"
+                      >
+                    </v-flex>
+                    <v-spacer></v-spacer>
+                    <v-flex xs6 d-flex>
+                      <v-select
+                        :items="categories"
+                        color="white"
+                        label="Kategori"
+                        dark
+                        v-model="category"
+                      ></v-select>
+                    </v-flex>
+                  </v-layout>
+                  <v-flex>
+                    <img :src="imageUrl" width="250px">
+                  </v-flex>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
+                <v-flex>
+                  <v-textarea
+                    dark
+                    name="description"
+                    label="Beskrivning"
+                    id="description"
+                    v-model="description"
+                    required
+                    box
+                    color="white"
+                  ></v-textarea>
+                </v-flex>
+              </v-layout>
             </v-flex>
-        </v-layout>
-        <v-layout row>
-            <v-flex xs-12>
-                <form @submit.prevent="onCreateMeetup">
-                    <v-layout row>
-                        <v-flex xs12 md6 offset-sm3>
-                            <v-text-field
-                            dark
-                            name="title"
-                            label="Titel"
-                            id="title"
-                            v-model="title"
-                            required
-                            box
-                            color="white"
-                            ></v-text-field>
-                        </v-flex>
-                    </v-layout>
-                    <v-layout row>
-                        <v-flex xs12 md6 offset-sm3>
-                            <v-text-field
-                            dark
-                            name="location"
-                            label="Plats"
-                            id="location"
-                            v-model="location"
-                            required
-                            color="white"
-                            box></v-text-field>
-                        </v-flex>
-                    </v-layout>
-                    <v-layout row wrap >
-                        <v-flex xs12 md6 offset-sm3>
-                            <v-layout row wrap>
-                                <v-flex xs6 d-flex>
-                                    <v-select
-                                        :items="categories"
-                                        color="white"
-                                        label="Kategori"
-                                        dark
-                                        v-model="category"
-                                        ></v-select>
-                                </v-flex>
-                                <v-spacer></v-spacer>
-                                <v-flex xs4 d-flex>
-                                    <v-btn raised class="accent" @click="onPickFile">Ladda upp bild</v-btn>
-                                    <input 
-                                        dark
-                                        type="file" 
-                                        style="display: none;" 
-                                        ref="fileInput" 
-                                        accept="image/*"
-                                        @change="onFilePicked">
-                                </v-flex>
-                            </v-layout>
-                        </v-flex>
-                    </v-layout>
-                    <v-layout row>
-                        <v-flex xs12 md6 offset-sm3>
-                            <v-textarea
-                            dark
-                            name="description"
-                            label="Beskrivning"
-                            id="description"
-                            v-model="description"
-                            required
-                            box
-                            color="white"></v-textarea>
-                        </v-flex>
-                    </v-layout>
-                    <v-layout row>
-                        <v-flex xs-12 md6 offset-sm3>
-                            <h4 class="display-1 white--text mb-3">Välj datum och tid</h4>
-                        </v-flex>
-                    </v-layout>
-                    <v-layout row>
-                        <v-flex xs-12 md6 offset-sm3 class="mb-2">
-                            <v-date-picker 
-                                :first-day-of-week="1"
-                                v-model="date"
-                                locale="sv-se"
-                                landscape 
-                                color="info"
-                                full-width
-                                max-heigh="100px"
-                            ></v-date-picker>
-                        </v-flex>
-                    </v-layout>
-                    <v-layout row>
-                        <v-flex xs-12 md6 offset-sm3>
-                            <v-time-picker 
-                            format="24hr" 
-                            full-width 
-                            landscape 
-                            color="info" 
-                            v-model="time "
-                            ></v-time-picker>
-                        </v-flex>
-                    </v-layout>
-                    <v-layout row>
-                        <v-flex xs12 md6 offset-sm3>
-                            <v-btn 
-                            class="accent" 
-                            :disabled="!formIsValid"
-                            type="submit">Skapa Evenemang</v-btn>
-                        </v-flex>
-                    </v-layout>
-                       <v-layout row>
-                        <v-flex xs12 md6 offset-sm3>
-                            <img :src="imageUrl" height="150px">
-                        </v-flex>
-                    </v-layout>
-                </form>
+            <v-flex xs12 lg6 class="px-3">
+              <v-layout row>
+                <v-flex class="mb-2">
+                  <v-date-picker
+                    :first-day-of-week="1"
+                    v-model="date"
+                    locale="sv-se"
+                    landscape
+                    color="accent"
+                    full-width
+                    max-heigh="100px"
+                  ></v-date-picker>
+                </v-flex>
+              </v-layout>
+              <v-layout row>
+                <v-flex>
+                  <v-time-picker format="24hr" full-width landscape color="accent" v-model="time "></v-time-picker>
+                </v-flex>
+              </v-layout>
+              <v-layout row>
+                <v-flex>
+                  <v-btn
+                    style="float:right"
+                    class="accent createButton"
+                    :disabled="!formIsValid"
+                    type="submit"
+                    dark
+                  >Skapa Evenemang</v-btn>
+                </v-flex>
+              </v-layout>
+              <v-layout row></v-layout>
             </v-flex>
-        </v-layout>
-    </v-container>
+          </v-layout>
+        </form>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 <script>
 export default {
@@ -201,3 +198,5 @@ export default {
   }
 };
 </script>
+<style>
+</style>
