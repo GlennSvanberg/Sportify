@@ -1,5 +1,7 @@
 import * as firebase from "firebase";
-import { resolve } from "path";
+import {
+  resolve
+} from "path";
 
 export default {
   state: {
@@ -25,7 +27,10 @@ export default {
     }
   },
   actions: {
-    loadUser({ commit, getters }, payload) {
+    loadUser({
+      commit,
+      getters
+    }, payload) {
       commit("setLoading", true);
       firebase
         .database()
@@ -48,7 +53,9 @@ export default {
           commit("setLoading", false);
         });
     },
-    signUserUp({ commit }, payload) {
+    signUserUp({
+      commit
+    }, payload) {
       commit("setLoading", true);
       commit("clearError");
       firebase
@@ -65,6 +72,7 @@ export default {
 
           // Save to users table
           commit("setUser", newUser);
+
           firebase
             .database()
             .ref("/users/" + newUser.id)
@@ -81,7 +89,9 @@ export default {
           console.log(error);
         });
     },
-    signUserIn({ commit }, payload) {
+    signUserIn({
+      commit
+    }, payload) {
       commit("setLoading", true);
       commit("clearError");
       firebase
@@ -100,7 +110,9 @@ export default {
           console.log(error);
         });
     },
-    autoSignIn({ commit }, payload) {
+    autoSignIn({
+      commit
+    }, payload) {
       commit("setLoading", true);
       commit("setUser", {
         id: payload.uid,
@@ -111,7 +123,10 @@ export default {
       });
       commit("setLoading", false);
     },
-    fetchUserData({ commit, getters }) {
+    fetchUserData({
+      commit,
+      getters
+    }) {
       commit("setLoading", true);
       firebase
         .database()
@@ -133,11 +148,15 @@ export default {
           commit("setLoading", false);
         });
     },
-    logout({ commit }) {
+    logout({
+      commit
+    }) {
       firebase.auth().signOut();
       commit("setUser", null);
     },
-    signInWithFacebook({ commit }) {
+    signInWithFacebook({
+      commit
+    }) {
       commit("setLoading", true);
       firebase
         .auth()
@@ -176,7 +195,13 @@ export default {
     },
     userById(state) {
       return id => {
+
         var user = state.loadedUsers.find(u => u.id === id);
+        if (user == undefined) {
+
+          user = state.user
+        }
+
         return user;
       };
     }

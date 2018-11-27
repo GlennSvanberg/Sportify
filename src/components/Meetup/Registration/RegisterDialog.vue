@@ -54,10 +54,13 @@ export default {
     onAgree() {
       if (this.userIsRegistered) {
         this.$store.dispatch("unRegisterFromMeetup", this.meetupId);
+        this.$store.dispatch("loadMeetups");
+
         this.registerDialog = false;
       } else {
         this.$store.dispatch("registerForMeetup", this.meetupId);
         this.$store.dispatch("usersRegisteredMeetups");
+        this.$store.dispatch("loadMeetups");
         this.registerDialog = false;
       }
     }

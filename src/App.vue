@@ -2,20 +2,15 @@
   <v-app class="primary">
     <v-navigation-drawer class="accent" dark temporary fixed v-model="sideNav">
       <v-list>
-        <v-list-tile 
-        v-for="item in menuItems" 
-        :key="item.title" 
-        :to="item.link">
+        <v-list-tile v-for="item in menuItems" :key="item.title" :to="item.link">
           <v-list-tile-action>
             <v-icon>{{item.icon}}</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>{{ item.title }}</v-list-tile-content>
         </v-list-tile>
-        <v-list-tile v-if="userIsAuthenticated"
-        @click="onLogout"
-          to = "/signin">
+        <v-list-tile v-if="userIsAuthenticated" @click="onLogout" to="/signin">
           <v-list-tile-action>
-             <v-icon>exit_to_app</v-icon>
+            <v-icon>exit_to_app</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>Logga ut</v-list-tile-content>
         </v-list-tile>
@@ -24,27 +19,17 @@
     <v-toolbar dark fixed class="accent">
       <v-toolbar-title>
         <router-link to="/" tag="span" style="cursor: pointer">Sportify</router-link>
-        </v-toolbar-title>
-      <v-toolbar-side-icon 
-      @click="sideNav = !sideNav" 
-      class="hidden-md-and-up"
-      ></v-toolbar-side-icon>
+      </v-toolbar-title>
+      <v-toolbar-side-icon @click="sideNav = !sideNav" class="hidden-md-and-up"></v-toolbar-side-icon>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
-        <v-btn flat 
-        v-for="item in menuItems" 
-        :key="item.title"
-        :to="item.link">
+        <v-btn flat v-for="item in menuItems" :key="item.title" :to="item.link">
           <v-icon left>{{item.icon}}</v-icon>
           {{item.title}}
-          </v-btn>
-          <v-btn flat
-          v-if="userIsAuthenticated"
-          @click="onLogout"
-          to = "/signin">
-            <v-icon left>exit_to_app</v-icon>
-            Logga ut
-          </v-btn>
+        </v-btn>
+        <v-btn flat v-if="userIsAuthenticated" @click="onLogout" to="/signin">
+          <v-icon left>exit_to_app</v-icon>Logga ut
+        </v-btn>
       </v-toolbar-items>
     </v-toolbar>
     <main>

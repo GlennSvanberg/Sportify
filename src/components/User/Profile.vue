@@ -18,7 +18,13 @@
           <v-flex xs4>
             <v-layout row>
               <v-avatar size="100px">
-                <v-img :src="user.photoURL" height="100px" contain class="ml-4 mt-5"></v-img>
+                <v-img
+                  v-if="user.photoURL"
+                  :src="user.photoURL"
+                  height="100px"
+                  contain
+                  class="ml-4 mt-5"
+                ></v-img>
               </v-avatar>
             </v-layout>
             <v-layout row>
@@ -40,7 +46,7 @@
           <v-flex xs8>
             <v-card flat class="mx-4 my-4 info" max-width="400px">
               <v-card-text class="white--text">
-                <div>
+                <div v-if="user">
                   <div class="headline mb-4">{{ user.name}}</div>
                   <div class="mb-4">Epost: {{ user.email}}</div>
                   <div class>{{ user.description }}</div>
