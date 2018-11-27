@@ -90,6 +90,7 @@ export default {
                     date: obj.date,
                     location: obj.location,
                     creatorId: obj.creatorId,
+                    registeredUsers: obj.registeredUsers,
                     category: obj.category
                   });
                 }
@@ -120,14 +121,15 @@ export default {
               date: obj.date,
               location: obj.location,
               creatorId: obj.creatorId,
-              category: obj.category
+              category: obj.category,
+              registeredUsers: obj.registeredUsers
             });
           });
           commit("setUsersCreatedMeetups", meetups);
           commit("setLoading", false);
         });
     },
-    loadMeetups({ commit, dispatch }) {
+    loadMeetups({ commit, dispatch, getters }) {
       commit("setLoading", true);
       firebase
         .database()
@@ -136,6 +138,7 @@ export default {
         .then(data => {
           const meetups = [];
           const obj = data.val();
+          const users = [];
           for (let key in obj) {
             meetups.push({
               id: key,
@@ -145,7 +148,8 @@ export default {
               date: obj[key].date,
               location: obj[key].location,
               creatorId: obj[key].creatorId,
-              category: obj[key].category
+              category: obj[key].category,
+              registeredUsers: obj[key].registeredUsers
             });
             dispatch("loadUser", obj[key].creatorId);
           }

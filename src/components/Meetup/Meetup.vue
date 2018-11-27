@@ -11,37 +11,13 @@
             </v-flex>
         </v-layout>
         <v-layout row wrap v-else>
-            <v-flex xs12>
-                <v-card class="info">
-                    <v-card-title>
-                        <h1 class="white--text">{{meetup.title}}</h1>
-                        <template v-if="userIsCreator">
-                            <v-spacer></v-spacer>
-                            <app-edit-meetup-details-dialog :meetup="meetup"></app-edit-meetup-details-dialog>
-                        </template>
-                        
-                    </v-card-title>
-                       <v-img
-                          :src="meetup.imageUrl"
-                          height="400px"
-                          contain
-                        ></v-img>
-                        <v-card-text> 
-                            <router-link tag="v-flex" :to="/profile/ + creator.id" :style="{ cursor: 'pointer'}">
-                            <div class="white--text inline">Arrangeras av:</div>
-                                    <v-avatar class="ml-4 mb-4">
-                                        <v-img
-                                        :src="creator.photoURL">
-                                        </v-img>
-                                        <v-flex >
-                                            <div  class="white--text">{{creator.name}}</div>
-                                        </v-flex>
-                                    </v-avatar>  
-
-                            </router-link>
-                            <div class="white--text"><strong>{{meetup.category}}</strong></div>
-                            <div class="white--text">{{meetup.date | date}} - {{meetup.location}}</div>
-                            
+            <v-flex xs12 class="info px-5 py-4">
+                <v-layout row wrap>
+                    <v-flex md4 class="">
+                      
+                      <h1 class="white--text">{{meetup.category}} - {{meetup.title}}</h1>
+                      <h3 class="white--text mb-3">{{meetup.date | date}} - {{meetup.location}}</h3>
+                      
                             <div>
                                 <app-edit-meetup-date-dialog 
                                 :meetup="meetup" 
@@ -52,13 +28,67 @@
                                 v-if="userIsCreator"
                                 ></app-edit-meetup-time-dialog>
                                 </div>
-                            <div class="white--text">Beskrivning: {{meetup.description}}</div>
-                        </v-card-text>
-                        <v-card-actions>
+                            <div class="white--text mb-4">Beskrivning: {{meetup.description}}</div>
+                            <v-layout row>
+                              <router-link tag="v-flex" :to="/profile/ + creator.id" :style="{ cursor: 'pointer'}">
+                            <div class="white--text inline">Arrangeras av:</div>
+                                    <v-avatar class="ml-5 mb-4">
+                                        <v-img
+                                        :src="creator.photoURL">
+                                        </v-img>
+                                        <v-flex >
+                                            <div  class="white--text">{{creator.name}}</div>
+                                        </v-flex>
+                                    </v-avatar>
+                                    
+                            
+                            </router-link>
                             <v-spacer></v-spacer>
                             <app-meetup-register-dialog v-if="userIsAuthenticated && !userIsCreator" :meetupId="meetup.id"></app-meetup-register-dialog>
-                        </v-card-actions>
-                </v-card>
+                            </v-layout>
+
+                      
+                            
+                              <v-flex shrink>
+                              <v-toolbar color="accent" dark>
+                                <v-toolbar-title>Registrerade Deltagare - Antal: {{users.length }}</v-toolbar-title>
+                                <v-spacer></v-spacer>
+                              </v-toolbar>
+                              <v-list two-line subheader class="primary white--text mb-4" dark>
+                                <v-list-tile
+                                  v-for="(user, index) in users"
+                                  :key="user"
+                                  avatar
+                                  :to="/profile/ + index"
+                                >
+                                  <v-list-tile-content>
+                                    <v-list-tile-title>{{user.name}}</v-list-tile-title>
+                                    
+                                  </v-list-tile-content>
+                                  <v-list-tile-action>
+                                    <v-btn icon ripple>
+                                      <v-icon color="grey lighten-1">info</v-icon>
+                                    </v-btn>
+                                  </v-list-tile-action>
+                                </v-list-tile>
+                              </v-list>
+                            </v-flex>
+
+
+                  </v-flex>
+                  <v-flex md8>
+                    <template v-if="userIsCreator" >
+                      <v-spacer></v-spacer>
+                      <app-edit-meetup-details-dialog :meetup="meetup" style="float:right" class="mr-5 my-3 "></app-edit-meetup-details-dialog>
+                    </template>
+                    <v-img
+                          :src="meetup.imageUrl"
+                          height="500px"
+                          contain
+                        ></v-img>
+                  </v-flex>
+
+                </v-layout>
             </v-flex>
         </v-layout>
     </v-container>
@@ -66,7 +96,19 @@
 <script>
 export default {
   props: ["id"],
+  data() {
+    return {};
+  },
   computed: {
+    users() {
+      var users = [];
+      for (var userId in this.meetup.registeredUsers) {
+        console.log("here" + userId);
+        var user = this.$store.getters.userById(userId);
+        users.push(user);
+      }
+      return users;
+    },
     creator() {
       return this.$store.getters.userById(this.meetup.creatorId);
     },
